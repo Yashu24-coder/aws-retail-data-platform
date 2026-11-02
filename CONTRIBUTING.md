@@ -24,6 +24,12 @@ Append to `quality/checks.yml`. The SQL must return a single number. Use
 things worth knowing. `test_quality_rules.py` will fail if the SQL does not run,
 which catches most typos before CI does.
 
+## Infrastructure changes
+
+Run `terraform fmt -recursive` and `terraform validate` in `infra/terraform`
+before committing. CI checks HCL syntax and runs `validate`; it does not gate on
+formatting, so formatting is your responsibility.
+
 ## Commit messages
 
 Imperative, specific, under 72 characters:

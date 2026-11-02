@@ -90,23 +90,23 @@ resource "aws_iam_role_policy" "redshift_s3" {
 }
 
 resource "aws_redshiftserverless_namespace" "this" {
-  count              = var.create_redshift ? 1 : 0
-  namespace_name     = "${var.name_prefix}-ns"
-  db_name            = "analytics"
-  admin_username     = "biadmin"
+  count                 = var.create_redshift ? 1 : 0
+  namespace_name        = "${var.name_prefix}-ns"
+  db_name               = "analytics"
+  admin_username        = "biadmin"
   manage_admin_password = true
-  iam_roles          = [aws_iam_role.redshift_loader[0].arn]
-  default_iam_role_arn = aws_iam_role.redshift_loader[0].arn
+  iam_roles             = [aws_iam_role.redshift_loader[0].arn]
+  default_iam_role_arn  = aws_iam_role.redshift_loader[0].arn
 }
 
 resource "aws_redshiftserverless_workgroup" "bi" {
-  count              = var.create_redshift ? 1 : 0
-  namespace_name     = aws_redshiftserverless_namespace.this[0].namespace_name
-  workgroup_name     = "${var.name_prefix}-bi"
-  base_capacity      = var.redshift_base_capacity
+  count               = var.create_redshift ? 1 : 0
+  namespace_name      = aws_redshiftserverless_namespace.this[0].namespace_name
+  workgroup_name      = "${var.name_prefix}-bi"
+  base_capacity       = var.redshift_base_capacity
   publicly_accessible = false
-  subnet_ids         = local.subnet_ids
-  security_group_ids = [aws_security_group.redshift[0].id]
+  subnet_ids          = local.subnet_ids
+  security_group_ids  = [aws_security_group.redshift[0].id]
 
   config_parameter {
     parameter_key   = "enable_user_activity_logging"

@@ -185,9 +185,10 @@ make lint     # ruff
 | `test_gold.py` | no orphan dimension keys, cancelled orders excluded, `net = gross - discount`, mart totals reconcile to the fact |
 | `test_quality_rules.py` | every rule in `checks.yml` has valid fields and executable SQL |
 
-CI (`.github/workflows/ci.yml`) runs three jobs on every push: `lint-and-test`,
-`pipeline-smoke` (runs `make run` and asserts all 12 gates pass), and
-`terraform` (`fmt -check` and `validate`).
+CI (`.github/workflows/ci.yml`) runs three jobs on every push: `lint-and-test`
+(ruff plus pytest), `pipeline-smoke` (runs `make run` and asserts all 12 quality
+gates pass), and `terraform` (HCL syntax check, then `init -backend=false` and
+`validate` against the real provider schema).
 
 ## Repository layout
 

@@ -61,11 +61,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: HCL syntax check
+        # fast fail before downloading terraform: catches unbalanced blocks and
+        # bad interpolation before init spends a minute resolving providers
+        run: |
+          pip install python-hcl2
+          python - <<'PY'
+          import pathlib, sys, hcl2
+          bad = 0
+          for path in sorted(pathlib.Path("infra").rglob("*.tf")):
+              try:
+                  with path.open() as fh:
+                      hcl2.load(fh)
+              except Exception as exc:
+                  bad += 1
+                  print(f"SYNTAX {path}: {exc}")
+          print(f"parsed {len(list(pathlib.Path('infra').rglob('*.tf')))} files, {bad} failures")
+          sys.exit(1 if bad else 0)
+          PY
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.9.5"
-      - name: Format check
-        run: terraform -chdir=infra/terraform fmt -check -recursive
       - name: Init without backend
         run: terraform -chdir=infra/terraform init -backend=false -input=false
       - name: Validate

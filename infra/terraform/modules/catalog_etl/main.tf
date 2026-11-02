@@ -20,8 +20,8 @@ resource "aws_iam_role_policy_attachment" "glue_service" {
 
 data "aws_iam_policy_document" "glue_data" {
   statement {
-    sid     = "ReadRaw"
-    actions = ["s3:GetObject", "s3:ListBucket"]
+    sid       = "ReadRaw"
+    actions   = ["s3:GetObject", "s3:ListBucket"]
     resources = [
       var.raw_bucket_arn,
       "${var.raw_bucket_arn}/*",
@@ -29,8 +29,8 @@ data "aws_iam_policy_document" "glue_data" {
   }
 
   statement {
-    sid     = "WriteCurated"
-    actions = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:ListBucket"]
+    sid       = "WriteCurated"
+    actions   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:ListBucket"]
     resources = [
       var.curated_bucket_arn,
       "${var.curated_bucket_arn}/*",
@@ -71,7 +71,7 @@ resource "aws_glue_crawler" "bronze" {
   }
 
   configuration = jsonencode({
-    Version = 1.0
+    Version       = 1.0
     CrawlerOutput = {
       Partitions = { AddOrUpdateBehavior = "InheritFromTable" }
     }
@@ -127,9 +127,9 @@ resource "aws_glue_job" "silver_to_gold" {
 }
 
 resource "aws_glue_trigger" "daily" {
-  name          = "${var.name_prefix}-daily"
-  schedule      = var.schedule_expression
-  type          = "SCHEDULED"
+  name              = "${var.name_prefix}-daily"
+  schedule          = var.schedule_expression
+  type              = "SCHEDULED"
   start_on_creation = true
 
   actions {
@@ -138,9 +138,9 @@ resource "aws_glue_trigger" "daily" {
 }
 
 resource "aws_glue_trigger" "after_silver" {
-  name     = "${var.name_prefix}-after-silver"
-  type     = "CONDITIONAL"
-  enabled  = true
+  name    = "${var.name_prefix}-after-silver"
+  type    = "CONDITIONAL"
+  enabled = true
 
   predicate {
     conditions {
