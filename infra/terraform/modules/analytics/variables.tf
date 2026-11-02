@@ -1,0 +1,11 @@
+variable "name_prefix" { type = string }
+variable "curated_bucket_id" { type = string }
+variable "curated_bucket_arn" { type = string }
+variable "glue_database_name" { type = string }
+variable "athena_bytes_scanned_cutoff" { type = number }
+variable "create_redshift" { type = bool }
+variable "redshift_base_capacity" { type = number }
+variable "account_id" { type = string }
+variable "aws_region" { type = string }
+variable "vpc_id" { type = string }
+variable "subnet_ids" { type = list(string) }

@@ -1,0 +1,100 @@
+# Data quality contract. Every check returns one number and compares it to a
+# threshold. severity=error fails the pipeline; severity=warn reports only.
+checks:
+  - name: silver_orders_not_empty
+    table: silver.orders
+    description: silver orders has at least one row
+    sql: SELECT count(*) FROM silver.orders
+    expect: gte
+    threshold: 1
+    severity: error
+
+  - name: silver_orders_unique_order_id
+    table: silver.orders
+    description: one row per order_id after deduplication
+    sql: SELECT count(*) - count(DISTINCT order_id) FROM silver.orders
+    expect: eq
+    threshold: 0
+    severity: error
+
+  - name: silver_orders_no_null_date
+    table: silver.orders
+    description: every order has a parsed order_date
+    sql: SELECT count(*) FROM silver.orders WHERE order_date IS NULL
+    expect: eq
+    threshold: 0
+    severity: error
+
+  - name: silver_orders_no_blank_customer
+    table: silver.orders
+    description: no blank customer keys survive silver
+    sql: SELECT count(*) FROM silver.orders WHERE customer_id IS NULL OR customer_id = ''
+    expect: eq
+    threshold: 0
+    severity: error
+
+  - name: silver_items_positive_price
+    table: silver.order_items
+    description: unit price is strictly positive
+    sql: SELECT count(*) FROM silver.order_items WHERE unit_price <= 0
+    expect: eq
+    threshold: 0
+    severity: error
+
+  - name: silver_items_discount_in_range
+    table: silver.order_items
+    description: discount rate between 0 and 1
+    sql: SELECT count(*) FROM silver.order_items WHERE discount_rate < 0 OR discount_rate > 1
+    expect: eq
+    threshold: 0
+    severity: error
+
+  - name: fct_no_orphan_customer
+    table: gold.fct_order_items
+    description: every fact row resolves to a customer dimension row
+    sql: SELECT count(*) FROM gold.fct_order_items WHERE customer_key IS NULL
+    expect: eq
+    threshold: 0
+    severity: error
+
+  - name: fct_no_orphan_product
+    table: gold.fct_order_items
+    description: every fact row resolves to a product dimension row
+    sql: SELECT count(*) FROM gold.fct_order_items WHERE product_key IS NULL
+    expect: eq
+    threshold: 0
+    severity: error
+
+  - name: fct_net_amount_matches
+    table: gold.fct_order_items
+    description: net = gross - discount on every row
+    sql: >
+      SELECT count(*) FROM gold.fct_order_items
+      WHERE abs(net_amount - (gross_amount - discount_amount)) > 0.02
+    expect: eq
+    threshold: 0
+    severity: error
+
+  - name: fct_revenue_positive
+    table: gold.fct_order_items
+    description: total net revenue is positive
+    sql: SELECT sum(net_amount) FROM gold.fct_order_items
+    expect: gt
+    threshold: 0
+    severity: error
+
+  - name: dim_product_categorised
+    table: gold.dim_product
+    description: no product left uncategorised
+    sql: SELECT count(*) FROM gold.dim_product WHERE category = 'Uncategorised'
+    expect: eq
+    threshold: 0
+    severity: warn
+
+  - name: mart_months_covered
+    table: gold.mart_monthly_revenue
+    description: at least 12 months of history in the revenue mart
+    sql: SELECT count(*) FROM gold.mart_monthly_revenue
+    expect: gte
+    threshold: 12
+    severity: error

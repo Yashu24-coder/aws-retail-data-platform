@@ -1,0 +1,35 @@
+17:29:14 | INFO    | cli                    | reset local lake and warehouse
+17:29:14 | INFO    | ingest                 | landed customers       420 rows -> lake/bronze/customers/dt=2026-11-01/part-000.parquet
+17:29:14 | INFO    | ingest                 | landed products         40 rows -> lake/bronze/products/dt=2026-11-01/part-000.parquet
+17:29:14 | INFO    | ingest                 | landed orders         1535 rows -> lake/bronze/orders/dt=2026-11-01/part-000.parquet
+17:29:14 | INFO    | ingest                 | landed order_items    3765 rows -> lake/bronze/order_items/dt=2026-11-01/part-000.parquet
+17:29:15 | INFO    | transform              | built silver.customers                 420 rows
+17:29:15 | INFO    | transform              | built silver.products                   40 rows
+17:29:15 | INFO    | transform              | built silver.orders                  1,450 rows
+17:29:15 | INFO    | transform              | built silver.order_items             3,705 rows
+17:29:15 | INFO    | transform              | built gold.dim_customer                420 rows
+17:29:15 | INFO    | transform              | built gold.dim_product                  40 rows
+17:29:15 | INFO    | transform              | built gold.dim_date                    421 rows
+17:29:15 | INFO    | transform              | built gold.fct_order_items           2,944 rows
+17:29:15 | INFO    | transform              | built gold.mart_monthly_revenue         14 rows
+17:29:15 | INFO    | transform              | built gold.mart_category_performance       5 rows
+17:29:15 | INFO    | quality                | PASS silver_orders_not_empty              1,450.00 gte 1
+17:29:15 | INFO    | quality                | PASS silver_orders_unique_order_id            0.00 eq 0
+17:29:15 | INFO    | quality                | PASS silver_orders_no_null_date               0.00 eq 0
+17:29:15 | INFO    | quality                | PASS silver_orders_no_blank_customer          0.00 eq 0
+17:29:15 | INFO    | quality                | PASS silver_items_positive_price              0.00 eq 0
+17:29:15 | INFO    | quality                | PASS silver_items_discount_in_range           0.00 eq 0
+17:29:15 | INFO    | quality                | PASS fct_no_orphan_customer                   0.00 eq 0
+17:29:15 | INFO    | quality                | PASS fct_no_orphan_product                    0.00 eq 0
+17:29:15 | INFO    | quality                | PASS fct_net_amount_matches                   0.00 eq 0
+17:29:15 | INFO    | quality                | PASS fct_revenue_positive               12,579,524.35 gt 0
+17:29:15 | INFO    | quality                | PASS dim_product_categorised                  0.00 eq 0
+17:29:15 | INFO    | quality                | PASS mart_months_covered                     14.00 gte 12
+17:29:19 | INFO    | report                 | wrote run summary: net revenue 12579524 across 14 months
+17:29:19 | INFO    | cli                    | pipeline finished in 4.9s | quality 12/12
+17:29:19 | INFO    | cli                    |   generate     0.10s
+17:29:19 | INFO    | cli                    |   ingest       0.34s
+17:29:19 | INFO    | cli                    |   silver       0.17s
+17:29:19 | INFO    | cli                    |   gold         0.19s
+17:29:19 | INFO    | cli                    |   quality      0.08s
+17:29:19 | INFO    | cli                    |   report       3.85s

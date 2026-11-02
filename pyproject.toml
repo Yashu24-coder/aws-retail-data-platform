@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "retail-platform"
+version = "1.2.0"
+description = "Medallion ELT on S3, Glue, Athena and Redshift for e-commerce order data"
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "PL"]
+ignore = ["PLR2004"]
+
+[tool.ruff.lint.per-file-ignores]
+# matplotlib and boto3 are imported inside the command that needs them, so the
+# CLI stays fast and local mode needs neither dependency installed.
+"src/retail_platform/cli.py" = ["PLC0415"]
+# The source generator is one long, deliberately explicit fixture builder.
+"src/retail_platform/extract/generate_sources.py" = ["PLR0912", "PLR0915"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q --strict-markers"

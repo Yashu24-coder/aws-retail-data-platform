@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint-and-test:
+    name: Lint and unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - name: Ruff
+        run: ruff check .
+      - name: Pytest
+        run: pytest -q --cov=src/retail_platform --cov-report=term-missing
+
+  pipeline-smoke:
+    name: End-to-end local run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - name: Run the pipeline
+        run: make run
+      - name: Assert every quality gate passed
+        run: |
+          python - <<'PY'
+          import json, sys
+          summary = json.load(open("reports/run_summary.json"))
+          q = summary["quality"]
+          print(f"quality {q['passed']}/{q['total']}, "
+                f"net revenue {summary['net_revenue']:,.0f}")
+          if q["passed"] != q["total"]:
+              sys.exit("a data quality gate failed")
+          if summary["net_revenue"] <= 0:
+              sys.exit("revenue mart is empty")
+          PY
+      - name: Upload artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-output
+          path: |
+            reports/
+            docs/images/
+
+  terraform:
+    name: Terraform validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.5"
+      - name: Format check
+        run: terraform -chdir=infra/terraform fmt -check -recursive
+      - name: Init without backend
+        run: terraform -chdir=infra/terraform init -backend=false -input=false
+      - name: Validate
+        run: terraform -chdir=infra/terraform validate

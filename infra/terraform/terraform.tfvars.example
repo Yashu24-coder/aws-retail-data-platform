@@ -1,0 +1,13 @@
+aws_region          = "ap-south-1"
+project_name        = "retail-platform"
+environment         = "dev"
+
+# These two must be globally unique across all of AWS.
+raw_bucket_name     = "retail-platform-raw-CHANGEME"
+curated_bucket_name = "retail-platform-curated-CHANGEME"
+
+glue_worker_type       = "G.1X"
+glue_number_of_workers = 2
+
+# Leave false. Redshift Serverless bills per RPU-hour from creation.
+create_redshift = false

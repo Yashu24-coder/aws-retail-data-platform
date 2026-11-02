@@ -1,0 +1,122 @@
+[
+  {
+    "name": "silver_orders_not_empty",
+    "table": "silver.orders",
+    "severity": "error",
+    "description": "silver orders has at least one row",
+    "observed": 1450.0,
+    "operator": "gte",
+    "threshold": 1.0,
+    "passed": true
+  },
+  {
+    "name": "silver_orders_unique_order_id",
+    "table": "silver.orders",
+    "severity": "error",
+    "description": "one row per order_id after deduplication",
+    "observed": 0.0,
+    "operator": "eq",
+    "threshold": 0.0,
+    "passed": true
+  },
+  {
+    "name": "silver_orders_no_null_date",
+    "table": "silver.orders",
+    "severity": "error",
+    "description": "every order has a parsed order_date",
+    "observed": 0.0,
+    "operator": "eq",
+    "threshold": 0.0,
+    "passed": true
+  },
+  {
+    "name": "silver_orders_no_blank_customer",
+    "table": "silver.orders",
+    "severity": "error",
+    "description": "no blank customer keys survive silver",
+    "observed": 0.0,
+    "operator": "eq",
+    "threshold": 0.0,
+    "passed": true
+  },
+  {
+    "name": "silver_items_positive_price",
+    "table": "silver.order_items",
+    "severity": "error",
+    "description": "unit price is strictly positive",
+    "observed": 0.0,
+    "operator": "eq",
+    "threshold": 0.0,
+    "passed": true
+  },
+  {
+    "name": "silver_items_discount_in_range",
+    "table": "silver.order_items",
+    "severity": "error",
+    "description": "discount rate between 0 and 1",
+    "observed": 0.0,
+    "operator": "eq",
+    "threshold": 0.0,
+    "passed": true
+  },
+  {
+    "name": "fct_no_orphan_customer",
+    "table": "gold.fct_order_items",
+    "severity": "error",
+    "description": "every fact row resolves to a customer dimension row",
+    "observed": 0.0,
+    "operator": "eq",
+    "threshold": 0.0,
+    "passed": true
+  },
+  {
+    "name": "fct_no_orphan_product",
+    "table": "gold.fct_order_items",
+    "severity": "error",
+    "description": "every fact row resolves to a product dimension row",
+    "observed": 0.0,
+    "operator": "eq",
+    "threshold": 0.0,
+    "passed": true
+  },
+  {
+    "name": "fct_net_amount_matches",
+    "table": "gold.fct_order_items",
+    "severity": "error",
+    "description": "net = gross - discount on every row",
+    "observed": 0.0,
+    "operator": "eq",
+    "threshold": 0.0,
+    "passed": true
+  },
+  {
+    "name": "fct_revenue_positive",
+    "table": "gold.fct_order_items",
+    "severity": "error",
+    "description": "total net revenue is positive",
+    "observed": 12579524.350000009,
+    "operator": "gt",
+    "threshold": 0.0,
+    "passed": true
+  },
+  {
+    "name": "dim_product_categorised",
+    "table": "gold.dim_product",
+    "severity": "warn",
+    "description": "no product left uncategorised",
+    "observed": 0.0,
+    "operator": "eq",
+    "threshold": 0.0,
+    "passed": true
+  },
+  {
+    "name": "mart_months_covered",
+    "table": "gold.mart_monthly_revenue",
+    "severity": "error",
+    "description": "at least 12 months of history in the revenue mart",
+    "observed": 14.0,
+    "operator": "gte",
+    "threshold": 12.0,
+    "passed": true
+  }
+]

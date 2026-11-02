@@ -1,0 +1,41 @@
+{
+  "raw_rows": {
+    "orders": 1535,
+    "order_items": 3765,
+    "customers": 420,
+    "products": 40
+  },
+  "silver_rows": {
+    "orders": 1450,
+    "order_items": 3705,
+    "customers": 420,
+    "products": 40
+  },
+  "gold_rows": {
+    "bronze": 5760,
+    "silver": 5615,
+    "gold": 3844
+  },
+  "duplicate_order_rows": 35,
+  "duplicate_line_rows": 60,
+  "orders_dropped_for_missing_customer": 50,
+  "net_revenue": 12579524.35,
+  "completed_orders": 1199,
+  "months_covered": 14,
+  "date_range": [
+    "2025-09-06",
+    "2026-10-31"
+  ],
+  "quality": {
+    "total": 12,
+    "passed": 12
+  },
+  "timings_seconds": {
+    "generate": 0.1,
+    "ingest": 0.34,
+    "silver": 0.17,
+    "gold": 0.19,
+    "quality": 0.08
+  },
+  "runtime_seconds": 0.87
+}

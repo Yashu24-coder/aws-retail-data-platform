@@ -1,0 +1,10 @@
+variable "name_prefix" { type = string }
+variable "raw_bucket_id" { type = string }
+variable "raw_bucket_arn" { type = string }
+variable "curated_bucket_id" { type = string }
+variable "curated_bucket_arn" { type = string }
+variable "scripts_bucket_id" { type = string }
+variable "glue_database_name" { type = string }
+variable "glue_worker_type" { type = string }
+variable "glue_number_of_workers" { type = number }
+variable "schedule_expression" { type = string }
