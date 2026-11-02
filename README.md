@@ -1,6 +1,6 @@
 # Retail Data Platform - batch ELT on AWS
 
-![CI](https://github.com/USERNAME/aws-retail-data-platform/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Yashu24-coder/aws-retail-data-platform/actions/workflows/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12-3776AB)
 ![Terraform](https://img.shields.io/badge/terraform-%3E%3D1.6-7B42BC)
 ![AWS](https://img.shields.io/badge/AWS-S3%20%C2%B7%20Glue%20%C2%B7%20Athena%20%C2%B7%20Redshift-FF9900)
@@ -96,7 +96,7 @@ Three things worth flagging to the business:
 ## Quickstart - local mode, no AWS account
 
 ```bash
-git clone https://github.com/USERNAME/aws-retail-data-platform.git
+git clone https://github.com/Yashu24-coder/aws-retail-data-platform.git
 cd aws-retail-data-platform
 pip install -r requirements-dev.txt
 make run
@@ -239,8 +239,9 @@ Being explicit about the edges:
 
 ## Author
 
-Built by **Your Name** - [LinkedIn](https://linkedin.com/in/USERNAME) -
-you@example.com
+Built by **Kavali Yashwanth Royal** -
+[github.com/Yashu24-coder](https://github.com/Yashu24-coder) -
+176301502+Yashu24-coder@users.noreply.github.com
 
 If you are reviewing this repo, start with `quality/checks.yml` and
 `sql/gold/fct_order_items.sql`; those two files carry most of the reasoning.
